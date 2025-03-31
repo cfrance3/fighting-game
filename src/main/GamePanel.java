@@ -20,7 +20,7 @@ public class GamePanel extends JPanel implements Runnable {
     public final int FPS = 120;
 
     // INPUTS
-    private KeyboardInput keyI;
+    private KeyboardInput keyI = new KeyboardInput(this);;
 
     Player player;
 
@@ -30,7 +30,7 @@ public class GamePanel extends JPanel implements Runnable {
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
         setBackground(Color.GRAY);
         initPlayer();
-        keyI = new KeyboardInput(this);
+        addKeyListener(keyI);
         setDoubleBuffered(true);
         setFocusable(true);
     }
@@ -45,7 +45,7 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void update() {
-
+        player.update();
     }
 
     public void paintComponent(Graphics g) {
