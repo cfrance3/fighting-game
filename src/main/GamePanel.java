@@ -2,11 +2,14 @@ package main;
 
 import javax.swing.JPanel;
 
+import inputs.KeyboardInput;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GraphicsEnvironment;
+import java.awt.event.KeyListener;
 
 public class GamePanel extends JPanel implements Runnable {
 
@@ -16,6 +19,9 @@ public class GamePanel extends JPanel implements Runnable {
     public final int HEIGHT = (int) ge.getMaximumWindowBounds().getHeight();
     public final int FPS = 120;
 
+    // INPUTS
+    private KeyboardInput keyI;
+
     Player player;
 
     Thread gameThread;
@@ -24,6 +30,7 @@ public class GamePanel extends JPanel implements Runnable {
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
         setBackground(Color.GRAY);
         initPlayer();
+        keyI = new KeyboardInput(this);
         setDoubleBuffered(true);
         setFocusable(true);
     }
@@ -69,5 +76,9 @@ public class GamePanel extends JPanel implements Runnable {
                 delta--;
             }
         }
+    }
+
+    public KeyboardInput getKeyboardInput() {
+        return keyI;
     }
 }

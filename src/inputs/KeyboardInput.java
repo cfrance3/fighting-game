@@ -5,12 +5,12 @@ import java.awt.event.KeyListener;
 
 import main.GamePanel;
 
-public class KeyboardInputs implements KeyListener {
+public class KeyboardInput implements KeyListener {
 
     private GamePanel gp;
     private boolean wPressed, aPressed, sPressed, dPressed;
 
-    public KeyboardInputs(GamePanel gp) {
+    public KeyboardInput(GamePanel gp) {
         this.gp = gp;
     }
 
@@ -57,6 +57,22 @@ public class KeyboardInputs implements KeyListener {
             default:
                 break;
         }
+    }
+
+    public boolean getWPressed() {
+        return wPressed;
+    }
+
+    public boolean getAPressed() {
+        return aPressed;
+    }
+
+    public boolean getSPressed() {
+        return sPressed;
+    }
+
+    public boolean getDPressed() {
+        return dPressed;
     }
 
 }

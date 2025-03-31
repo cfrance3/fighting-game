@@ -18,6 +18,19 @@ public class Player {
         this.y = 300;
     }
 
+    public void update() {
+
+    }
+
+    private void move() {
+        float tx = x;
+        float ty = y;
+
+        if (gp.getKeyboardInput().getWPressed()) {
+
+        }
+    }
+
     public void draw(Graphics2D g2) {
         g2.setColor(Color.YELLOW);
         g2.fillRect((int) x, (int) y, WIDTH, HEIGHT);
