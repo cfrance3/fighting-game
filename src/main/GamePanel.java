@@ -19,16 +19,19 @@ public class GamePanel extends JPanel implements Runnable {
     private GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
     public final int WIDTH = (int) ge.getMaximumWindowBounds().getWidth();
     public final int HEIGHT = (int) ge.getMaximumWindowBounds().getHeight();
-    public final int FPS = 120;
 
     // INPUTS
     private KeyboardInput keyI = new KeyboardInput(this);;
 
+    // ENTITY ARRAYS
     private ArrayList<Player> players = new ArrayList<>();
-
     private ArrayList<SolidArea> solidAreas = new ArrayList<>();
 
+    // GAME RUNNING
     private Thread gameThread;
+    private boolean running = false;
+    final int MAX_UPS = 60;
+    final int MAX_FPS = 60;
 
     public GamePanel() {
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
@@ -43,6 +46,7 @@ public class GamePanel extends JPanel implements Runnable {
     public void launchGame() {
         gameThread = new Thread(this);
         gameThread.start();
+        running = true;
     }
 
     private void initPlayer() {
@@ -53,13 +57,13 @@ public class GamePanel extends JPanel implements Runnable {
         solidAreas.add(new SolidArea(this, 100, 800, 1000, 100));
     }
 
-    public void update() {
-        updatePlayers();
+    public void update(double dt) {
+        updatePlayers(dt);
     }
 
-    public void updatePlayers() {
+    public void updatePlayers(double dt) {
         for (Player p : players) {
-            p.update();
+            p.update(dt);
         }
     }
 
@@ -86,22 +90,39 @@ public class GamePanel extends JPanel implements Runnable {
 
     @Override
     public void run() {
-        double drawInterval = 1000000000 / FPS;
-        double delta = 0;
-        long lastTime = System.nanoTime();
-        long currentTime;
 
-        while (gameThread != null) {
+        final int U_OPTIMAL_TIME = 1000000000 / MAX_UPS;
+        final int F_OPTIMAL_TIME = 1000000000 / MAX_FPS;
 
-            currentTime = System.nanoTime();
+        double uDeltaTime = 0, fDeltatime = 0;
+        int updates = 0, frames = 0;
+        long startTime = System.nanoTime();
+        long timer = System.currentTimeMillis();
 
-            delta += (currentTime - lastTime) / drawInterval;
-            lastTime = currentTime;
+        while (running) {
 
-            if (delta >= 1) {
-                update();
+            long currentTime = System.nanoTime();
+            uDeltaTime += (currentTime - startTime);
+            fDeltatime += (currentTime - startTime);
+            startTime = currentTime;
+
+            if (uDeltaTime >= U_OPTIMAL_TIME) {
+                update(uDeltaTime / 1000000000);
+                updates++;
+                uDeltaTime -= U_OPTIMAL_TIME;
+            }
+            if (fDeltatime >= F_OPTIMAL_TIME) {
                 repaint();
-                delta--;
+                frames++;
+                fDeltatime -= F_OPTIMAL_TIME;
+            }
+
+            if (System.currentTimeMillis() - timer >= 1000) {
+                System.out.println("UPS: " + updates);
+                System.out.println("FPS: " + frames);
+                updates = 0;
+                frames = 0;
+                timer += 1000;
             }
         }
     }
