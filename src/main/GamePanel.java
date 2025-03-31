@@ -16,7 +16,7 @@ import java.util.ArrayList;
 public class GamePanel extends JPanel implements Runnable {
 
     // WINDOW SETTINGS
-    GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+    private GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
     public final int WIDTH = (int) ge.getMaximumWindowBounds().getWidth();
     public final int HEIGHT = (int) ge.getMaximumWindowBounds().getHeight();
     public final int FPS = 120;
@@ -24,11 +24,11 @@ public class GamePanel extends JPanel implements Runnable {
     // INPUTS
     private KeyboardInput keyI = new KeyboardInput(this);;
 
-    ArrayList<Player> players = new ArrayList<>();
+    private ArrayList<Player> players = new ArrayList<>();
 
-    ArrayList<SolidArea> solidAreas = new ArrayList<>();
+    private ArrayList<SolidArea> solidAreas = new ArrayList<>();
 
-    Thread gameThread;
+    private Thread gameThread;
 
     public GamePanel() {
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
@@ -108,5 +108,9 @@ public class GamePanel extends JPanel implements Runnable {
 
     public KeyboardInput getKeyboardInput() {
         return keyI;
+    }
+
+    public ArrayList<SolidArea> getSolidAreas() {
+        return solidAreas;
     }
 }
