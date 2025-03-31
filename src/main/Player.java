@@ -5,12 +5,15 @@ import java.awt.Graphics2D;
 
 public class Player {
 
+    private GamePanel gp;
+
     private float x;
     private float y;
     private final int WIDTH = 10;
     private final int HEIGHT = 10;
 
     public Player(GamePanel gp) {
+        this.gp = gp;
         this.x = 500;
         this.y = 300;
     }
