@@ -3,7 +3,6 @@ package entities;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
-import java.awt.geom.Rectangle2D;
 
 import main.GamePanel;
 
@@ -16,6 +15,8 @@ public class Player {
     private final int WIDTH = 10;
     private final int HEIGHT = 20;
 
+    private final int SPEED = 200;
+
     private Rectangle hitbox;
 
     public Player(GamePanel gp) {
@@ -25,34 +26,44 @@ public class Player {
         this.hitbox = new Rectangle((int) x, (int) y, WIDTH, HEIGHT);
     }
 
-    public void update() {
-        move();
+    public void update(double dt) {
+        move(dt);
         updateHitbox();
     }
 
-    private void move() {
+    private void move(double dt) {
         float tx = x;
         float ty = y;
 
         if (gp.getKeyboardInput().getWPressed()) {
-            ty -= 5;
+            ty -= SPEED * dt;
         }
         if (gp.getKeyboardInput().getAPressed()) {
-            tx -= 5;
+            tx -= SPEED * dt;
         }
         if (gp.getKeyboardInput().getSPressed()) {
-            ty += 5;
+            ty += SPEED * dt;
         }
         if (gp.getKeyboardInput().getDPressed()) {
-            tx += 5;
+            tx += SPEED * dt;
         }
 
-        x = tx;
-        y = ty;
+        if (collidesWithSolidArea(tx, y) == false) {
+            x = tx;
+        }
+        if (collidesWithSolidArea(x, ty) == false) {
+            y = ty;
+        }
     }
 
-    private void checkSolidAreaCollisions(float tx, float ty) {
-
+    private boolean collidesWithSolidArea(float tx, float ty) {
+        for (SolidArea sa : gp.getSolidAreas()) {
+            if (tx + WIDTH - sa.getBounds().x > 1 && tx <= sa.getBounds().x + sa.getBounds().width &&
+                    ty + HEIGHT - sa.getBounds().y > 1 && ty <= sa.getBounds().y + sa.getBounds().height) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void updateHitbox() {
