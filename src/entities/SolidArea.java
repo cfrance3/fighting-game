@@ -20,4 +20,8 @@ public class SolidArea {
         g2.setColor(Color.WHITE);
         g2.fillRect(area.x, area.y, area.width, area.height);
     }
+
+    public Rectangle getBounds() {
+        return area;
+    }
 }
