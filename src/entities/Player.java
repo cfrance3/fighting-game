@@ -2,6 +2,8 @@ package entities;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.geom.Rectangle2D;
 
 import main.GamePanel;
 
@@ -12,16 +14,20 @@ public class Player {
     private float x;
     private float y;
     private final int WIDTH = 10;
-    private final int HEIGHT = 10;
+    private final int HEIGHT = 20;
+
+    private Rectangle hitbox;
 
     public Player(GamePanel gp) {
         this.gp = gp;
         this.x = 500;
         this.y = 300;
+        this.hitbox = new Rectangle((int) x, (int) y, WIDTH, HEIGHT);
     }
 
     public void update() {
         move();
+        updateHitbox();
     }
 
     private void move() {
@@ -43,6 +49,15 @@ public class Player {
 
         x = tx;
         y = ty;
+    }
+
+    private void checkSolidAreaCollisions(float tx, float ty) {
+
+    }
+
+    private void updateHitbox() {
+        hitbox.x = (int) x;
+        hitbox.y = (int) y;
     }
 
     public void draw(Graphics2D g2) {
