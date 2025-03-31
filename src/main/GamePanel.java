@@ -30,8 +30,8 @@ public class GamePanel extends JPanel implements Runnable {
     // GAME RUNNING
     private Thread gameThread;
     private boolean running = false;
-    final int MAX_UPS = 60;
-    final int MAX_FPS = 60;
+    final int MAX_UPS = 100;
+    final int MAX_FPS = 120;
 
     public GamePanel() {
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
