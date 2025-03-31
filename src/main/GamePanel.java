@@ -2,6 +2,8 @@ package main;
 
 import javax.swing.JPanel;
 
+import entities.Player;
+import entities.SolidArea;
 import inputs.KeyboardInput;
 
 import java.awt.Color;
@@ -9,7 +11,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GraphicsEnvironment;
-import java.awt.event.KeyListener;
+import java.util.ArrayList;
 
 public class GamePanel extends JPanel implements Runnable {
 
@@ -22,7 +24,9 @@ public class GamePanel extends JPanel implements Runnable {
     // INPUTS
     private KeyboardInput keyI = new KeyboardInput(this);;
 
-    Player player;
+    ArrayList<Player> players = new ArrayList<>();
+
+    ArrayList<SolidArea> solidAreas = new ArrayList<>();
 
     Thread gameThread;
 
@@ -30,6 +34,7 @@ public class GamePanel extends JPanel implements Runnable {
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
         setBackground(Color.GRAY);
         initPlayer();
+        initSolidAreas();
         addKeyListener(keyI);
         setDoubleBuffered(true);
         setFocusable(true);
@@ -41,11 +46,21 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     private void initPlayer() {
-        player = new Player(this);
+        players.add(new Player(this));
+    }
+
+    private void initSolidAreas() {
+        solidAreas.add(new SolidArea(this, 100, 800, 1000, 100));
     }
 
     public void update() {
-        player.update();
+        updatePlayers();
+    }
+
+    public void updatePlayers() {
+        for (Player p : players) {
+            p.update();
+        }
     }
 
     public void paintComponent(Graphics g) {
@@ -53,7 +68,20 @@ public class GamePanel extends JPanel implements Runnable {
 
         Graphics2D g2 = (Graphics2D) g;
 
-        player.draw(g2);
+        drawPlayers(g2);
+        drawSolidAreas(g2);
+    }
+
+    public void drawPlayers(Graphics2D g2) {
+        for (Player p : players) {
+            p.draw(g2);
+        }
+    }
+
+    public void drawSolidAreas(Graphics2D g2) {
+        for (SolidArea sa : solidAreas) {
+            sa.draw(g2);
+        }
     }
 
     @Override
