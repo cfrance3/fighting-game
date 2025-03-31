@@ -19,7 +19,7 @@ public class Player {
     }
 
     public void update() {
-
+        move();
     }
 
     private void move() {
@@ -27,8 +27,20 @@ public class Player {
         float ty = y;
 
         if (gp.getKeyboardInput().getWPressed()) {
-
+            ty -= 5;
         }
+        if (gp.getKeyboardInput().getAPressed()) {
+            tx -= 5;
+        }
+        if (gp.getKeyboardInput().getSPressed()) {
+            ty += 5;
+        }
+        if (gp.getKeyboardInput().getDPressed()) {
+            tx += 5;
+        }
+
+        x = tx;
+        y = ty;
     }
 
     public void draw(Graphics2D g2) {
