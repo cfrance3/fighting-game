@@ -16,46 +16,52 @@ public class KeyboardInput implements KeyListener {
 
     @Override
     public void keyTyped(KeyEvent e) {
-        // throw new UnsupportedOperationException("Unimplemented method 'keyTyped'");
+        int code = e.getKeyCode();
+        if (code == KeyEvent.VK_W) {
+            wPressed = true;
+        }
+        if (code == KeyEvent.VK_A) {
+            aPressed = true;
+        }
+        if (code == KeyEvent.VK_S) {
+            sPressed = true;
+        }
+        if (code == KeyEvent.VK_D) {
+            dPressed = true;
+        }
     }
 
     @Override
     public void keyPressed(KeyEvent e) {
-        switch (e.getKeyCode()) {
-            case KeyEvent.VK_W:
-                wPressed = true;
-                break;
-            case KeyEvent.VK_A:
-                aPressed = true;
-                break;
-            case KeyEvent.VK_S:
-                sPressed = true;
-                break;
-            case KeyEvent.VK_D:
-                dPressed = true;
-                break;
-            default:
-                break;
+        int code = e.getKeyCode();
+        if (code == KeyEvent.VK_W) {
+            wPressed = true;
+        }
+        if (code == KeyEvent.VK_A) {
+            aPressed = true;
+        }
+        if (code == KeyEvent.VK_S) {
+            sPressed = true;
+        }
+        if (code == KeyEvent.VK_D) {
+            dPressed = true;
         }
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-        switch (e.getKeyCode()) {
-            case KeyEvent.VK_W:
-                wPressed = false;
-                break;
-            case KeyEvent.VK_A:
-                aPressed = false;
-                break;
-            case KeyEvent.VK_S:
-                sPressed = false;
-                break;
-            case KeyEvent.VK_D:
-                dPressed = false;
-                break;
-            default:
-                break;
+        int code = e.getKeyCode();
+        if (code == KeyEvent.VK_W) {
+            wPressed = false;
+        }
+        if (code == KeyEvent.VK_A) {
+            aPressed = false;
+        }
+        if (code == KeyEvent.VK_S) {
+            sPressed = false;
+        }
+        if (code == KeyEvent.VK_D) {
+            dPressed = false;
         }
     }
 
