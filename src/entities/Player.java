@@ -1,7 +1,9 @@
-package main;
+package entities;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+
+import main.GamePanel;
 
 public class Player {
 
