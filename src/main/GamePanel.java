@@ -118,13 +118,17 @@ public class GamePanel extends JPanel implements Runnable {
             }
 
             if (System.currentTimeMillis() - timer >= 1000) {
-                System.out.println("UPS: " + updates);
-                System.out.println("FPS: " + frames);
+                // printLoopInfo(updates, frames);
                 updates = 0;
                 frames = 0;
                 timer += 1000;
             }
         }
+    }
+
+    private void printLoopInfo(int updates, int frames) {
+        System.out.println("UPS: " + updates);
+        System.out.println("FPS: " + frames);
     }
 
     public KeyboardInput getKeyboardInput() {
