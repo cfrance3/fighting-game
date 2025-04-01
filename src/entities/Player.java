@@ -2,6 +2,7 @@ package entities;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Rectangle;
 
 import main.GamePanel;
@@ -12,10 +13,15 @@ public class Player {
 
     private float x;
     private float y;
-    private final int WIDTH = 10;
-    private final int HEIGHT = 20;
+    private float xVel = 0;
+    private float yVel = 0;
+    private final int WIDTH = 30;
+    private final int HEIGHT = 60;
 
-    private final int SPEED = 200;
+    // MOVE ATTRIBUTES
+    private final int SPEED = 400;
+    private final int FALL_SPEED = 1;
+    private final int TERMINAL_VEL = 12;
 
     private Rectangle hitbox;
 
@@ -32,35 +38,74 @@ public class Player {
     }
 
     private void move(double dt) {
-        float tx = x;
-        float ty = y;
+        float tx;
+        float ty;
 
-        if (gp.getKeyboardInput().getWPressed()) {
-            ty -= SPEED * dt;
-        }
-        if (gp.getKeyboardInput().getAPressed()) {
-            tx -= SPEED * dt;
-        }
-        if (gp.getKeyboardInput().getSPressed()) {
-            ty += SPEED * dt;
-        }
-        if (gp.getKeyboardInput().getDPressed()) {
-            tx += SPEED * dt;
-        }
+        xVel = calculateXVel(dt);
+        yVel = calculateYVel(dt);
 
-        if (collidesWithSolidArea(tx, y) == false) {
+        tx = x + xVel;
+        ty = y + yVel;
+
+        if (!collidesWithSolidArea((int) tx, (int) y)) {
             x = tx;
         }
-        if (collidesWithSolidArea(x, ty) == false) {
+        if (!collidesWithSolidArea((int) x, (int) ty)) {
             y = ty;
+        } else if (isFloating((int) x, (int) y)) {
+            System.out.println("floating");
+        } else {
+            yVel = 0;
         }
     }
 
-    private boolean collidesWithSolidArea(float tx, float ty) {
+    private boolean collidesWithSolidArea(int x, int y) {
         for (SolidArea sa : gp.getSolidAreas()) {
-            if (tx + WIDTH - sa.getBounds().x > 1 && tx <= sa.getBounds().x + sa.getBounds().width &&
-                    ty + HEIGHT - sa.getBounds().y > 1 && ty <= sa.getBounds().y + sa.getBounds().height) {
-                return true;
+            if (x + WIDTH < sa.getX() || x > sa.getX() + sa.getWidth() || y + HEIGHT - 1 < sa.getY()
+                    || y > sa.getY() + sa.getHeight()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean isInAir(int x, int y) {
+        for (SolidArea sa : gp.getSolidAreas()) {
+            if (sa.getBounds().contains(new Point(x, y + HEIGHT))
+                    || sa.getBounds().contains(new Point(x + WIDTH, y + HEIGHT))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private float calculateXVel(double dt) {
+        xVel = 0;
+        if (gp.getKeyboardInput().getAPressed()) {
+            xVel -= 1;
+        }
+        if (gp.getKeyboardInput().getDPressed()) {
+            xVel += 1;
+        }
+        return (float) (xVel * SPEED * dt);
+    }
+
+    private float calculateYVel(double dt) {
+        if (!isInAir((int) x, (int) y)) {
+            return 0;
+        } else if (yVel >= TERMINAL_VEL) {
+            return TERMINAL_VEL;
+        }
+        return yVel + FALL_SPEED;
+    }
+
+    private boolean isFloating(int x, int y) {
+        for (int i = 1; i >= TERMINAL_VEL; i++) {
+            for (SolidArea sa : gp.getSolidAreas()) {
+                if ((sa.getBounds().contains(new Point(x, y + HEIGHT + i))
+                        || sa.getBounds().contains(new Point(x + WIDTH, y + HEIGHT + i)))) {
+                    return true;
+                }
             }
         }
         return false;
