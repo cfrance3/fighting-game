@@ -24,4 +24,20 @@ public class SolidArea {
     public Rectangle getBounds() {
         return area;
     }
+
+    public int getX() {
+        return area.x;
+    }
+
+    public int getY() {
+        return area.y;
+    }
+
+    public int getWidth() {
+        return area.width;
+    }
+
+    public int getHeight() {
+        return area.height;
+    }
 }
