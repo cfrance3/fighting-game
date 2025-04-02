@@ -1,5 +1,5 @@
 package entities;
 
 public enum PlayerState {
-    IDLE, ATTACK, JUMP;
+    IDLE, ATTACK, JUMP, FALL;
 }
