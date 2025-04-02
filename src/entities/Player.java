@@ -123,7 +123,11 @@ public class Player {
 
     private float calculateYVel(double dt) {
         if (!isInAir((int) x, (int) y)) {
-            return 0;
+            if (gp.getKeyboardInput().getSpacePressed()) {
+                return -20;
+            } else {
+                return 0;
+            }
         } else if (yVel >= TERMINAL_VEL) {
             return TERMINAL_VEL;
         }

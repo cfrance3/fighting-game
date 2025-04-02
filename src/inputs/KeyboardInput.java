@@ -8,7 +8,7 @@ import main.GamePanel;
 public class KeyboardInput implements KeyListener {
 
     private GamePanel gp;
-    private boolean wPressed, aPressed, sPressed, dPressed;
+    private boolean wPressed, aPressed, sPressed, dPressed, spacePressed;
 
     public KeyboardInput(GamePanel gp) {
         this.gp = gp;
@@ -46,6 +46,9 @@ public class KeyboardInput implements KeyListener {
         if (code == KeyEvent.VK_D) {
             dPressed = true;
         }
+        if (code == KeyEvent.VK_SPACE) {
+            spacePressed = true;
+        }
     }
 
     @Override
@@ -63,6 +66,9 @@ public class KeyboardInput implements KeyListener {
         if (code == KeyEvent.VK_D) {
             dPressed = false;
         }
+        if (code == KeyEvent.VK_SPACE) {
+            spacePressed = false;
+        }
     }
 
     public boolean getWPressed() {
@@ -79,6 +85,10 @@ public class KeyboardInput implements KeyListener {
 
     public boolean getDPressed() {
         return dPressed;
+    }
+
+    public boolean getSpacePressed() {
+        return spacePressed;
     }
 
 }
