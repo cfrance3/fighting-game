@@ -4,8 +4,10 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
 
 import main.GamePanel;
+import utils.LoadSave;
 
 public class Player {
 
@@ -18,10 +20,21 @@ public class Player {
     private final int WIDTH = 30;
     private final int HEIGHT = 60;
 
+    // DIRECTION
+    private final int RIGHT = 0;
+    private final int LEFT = 1;
+    private int direction = RIGHT;
+
+    // PLAYER STATE
+    PlayerState state = PlayerState.IDLE;
+
     // MOVE ATTRIBUTES
     private final int SPEED = 400;
     private final int FALL_SPEED = 1;
     private final int TERMINAL_VEL = 12;
+
+    // ANIMATIONS
+    BufferedImage[] animations;
 
     private Rectangle hitbox;
 
@@ -30,6 +43,13 @@ public class Player {
         this.x = 500;
         this.y = 300;
         this.hitbox = new Rectangle((int) x, (int) y, WIDTH, HEIGHT);
+        loadAnimations();
+    }
+
+    private void loadAnimations() {
+        animations = new BufferedImage[2];
+        animations[0] = LoadSave.getSpriteAtlas(LoadSave.PLAYER_RIGHT);
+        animations[1] = LoadSave.getSpriteAtlas(LoadSave.PLAYER_LEFT);
     }
 
     public void update(double dt) {
@@ -44,6 +64,8 @@ public class Player {
         xVel = calculateXVel(dt);
         yVel = calculateYVel(dt);
 
+        updateDirection(xVel);
+
         tx = x + xVel;
         ty = y + yVel;
 
@@ -56,6 +78,15 @@ public class Player {
             System.out.println("floating");
         } else {
             yVel = 0;
+        }
+    }
+
+    private void updateDirection(float xVel) {
+        if (xVel > 0) {
+            direction = RIGHT;
+        }
+        if (xVel < 0) {
+            direction = LEFT;
         }
     }
 
@@ -117,7 +148,6 @@ public class Player {
     }
 
     public void draw(Graphics2D g2) {
-        g2.setColor(Color.YELLOW);
-        g2.fillRect((int) x, (int) y, WIDTH, HEIGHT);
+        g2.drawImage(animations[direction], (int) x, (int) y, null);
     }
 }
