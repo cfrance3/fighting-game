@@ -1,6 +1,5 @@
 package entities;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -34,7 +33,7 @@ public class Player {
     private final int TERMINAL_VEL = 12;
 
     // ANIMATIONS
-    BufferedImage[] animations;
+    BufferedImage[][] animations;
 
     private Rectangle hitbox;
 
@@ -47,14 +46,17 @@ public class Player {
     }
 
     private void loadAnimations() {
-        animations = new BufferedImage[2];
-        animations[0] = LoadSave.getSpriteAtlas(LoadSave.PLAYER_RIGHT);
-        animations[1] = LoadSave.getSpriteAtlas(LoadSave.PLAYER_LEFT);
+        animations = new BufferedImage[2][2];
+        animations[0][0] = LoadSave.getSpriteAtlas(LoadSave.PLAYER_IDLE_RIGHT);
+        animations[0][1] = LoadSave.getSpriteAtlas(LoadSave.PLAYER_FALLING_RIGHT);
+        animations[1][0] = LoadSave.getSpriteAtlas(LoadSave.PLAYER_IDLE_LEFT);
+        animations[1][1] = LoadSave.getSpriteAtlas(LoadSave.PLAYER_FALLING_LEFT);
     }
 
     public void update(double dt) {
         move(dt);
         updateHitbox();
+        updateState();
     }
 
     private void move(double dt) {
@@ -87,6 +89,14 @@ public class Player {
         }
         if (xVel < 0) {
             direction = LEFT;
+        }
+    }
+
+    private void updateState() {
+        if (isInAir((int) x, (int) y)) {
+            state = PlayerState.FALL;
+        } else {
+            state = PlayerState.IDLE;
         }
     }
 
@@ -152,6 +162,6 @@ public class Player {
     }
 
     public void draw(Graphics2D g2) {
-        g2.drawImage(animations[direction], (int) x, (int) y, null);
+        g2.drawImage(animations[direction][state.getValue()], (int) x, (int) y, null);
     }
 }

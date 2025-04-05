@@ -8,8 +8,10 @@ import javax.imageio.ImageIO;
 
 public class LoadSave {
 
-    public static final String PLAYER_RIGHT = "res/blankFighterIdleRight.png";
-    public static final String PLAYER_LEFT = "res/blankFighterIdleLeft.png";
+    public static final String PLAYER_IDLE_RIGHT = "res/blankFighterIdleRight.png";
+    public static final String PLAYER_FALLING_RIGHT = "res/blankFighterFallingRight.png";
+    public static final String PLAYER_IDLE_LEFT = "res/blankFighterIdleLeft.png";
+    public static final String PLAYER_FALLING_LEFT = "res/blankFighterFallingLeft.png";
 
     public static BufferedImage getSpriteAtlas(String fileName) {
 
