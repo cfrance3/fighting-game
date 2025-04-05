@@ -1,5 +1,6 @@
 package entities;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -16,8 +17,8 @@ public class Player {
     private float y;
     private float xVel = 0;
     private float yVel = 0;
-    private final int WIDTH = 30;
-    private final int HEIGHT = 60;
+    private final int WIDTH = 32;
+    private final int HEIGHT = 64;
 
     // DIRECTION
     private final int RIGHT = 0;
@@ -34,6 +35,7 @@ public class Player {
 
     // ANIMATIONS
     BufferedImage[][] animations;
+    private final int IMAGE_OFFSET = 16;
 
     private Rectangle hitbox;
 
@@ -161,7 +163,13 @@ public class Player {
         hitbox.y = (int) y;
     }
 
+    private void drawHitbox(Graphics2D g2) {
+        g2.setColor(Color.RED);
+        g2.drawRect((int) x, (int) y, WIDTH, HEIGHT);
+    }
+
     public void draw(Graphics2D g2) {
-        g2.drawImage(animations[direction][state.getValue()], (int) x, (int) y, null);
+        g2.drawImage(animations[direction][state.getValue()], (int) (x - IMAGE_OFFSET), (int) y, null);
+        drawHitbox(g2);
     }
 }
