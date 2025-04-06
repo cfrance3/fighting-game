@@ -55,6 +55,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     private void initSolidAreas() {
         solidAreas.add(new SolidArea(this, 100, 800, 1000, 100));
+        solidAreas.add(new SolidArea(this, 1000, 300, 100, 500));
     }
 
     public void update(double dt) {

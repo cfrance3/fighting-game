@@ -109,11 +109,15 @@ public class Player {
     }
 
     private boolean collidesWithSolidArea(int x, int y) {
+        int c = 0;
         for (SolidArea sa : gp.getSolidAreas()) {
             if (x + WIDTH < sa.getX() || x > sa.getX() + sa.getWidth() || y + HEIGHT - 1 < sa.getY()
                     || y > sa.getY() + sa.getHeight()) {
-                return false;
+                c++;
             }
+        }
+        if (c == gp.getSolidAreas().size()) {
+            return false;
         }
         return true;
     }
