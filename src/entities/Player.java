@@ -8,6 +8,7 @@ import java.awt.image.BufferedImage;
 
 import main.GamePanel;
 import utils.LoadSave;
+import utils.UtilityTool;
 
 public class Player {
 
@@ -17,8 +18,8 @@ public class Player {
     private float y;
     private float xVel = 0;
     private float yVel = 0;
-    private final int WIDTH = 32;
-    private final int HEIGHT = 64;
+    private final int WIDTH = 64;
+    private final int HEIGHT = 128;
 
     // DIRECTION
     private final int RIGHT = 0;
@@ -31,11 +32,11 @@ public class Player {
     // MOVE ATTRIBUTES
     private final int SPEED = 400;
     private final int FALL_SPEED = 1;
-    private final int TERMINAL_VEL = 12;
+    private final int TERMINAL_VEL = 15;
 
     // ANIMATIONS
     BufferedImage[][] animations;
-    private final int IMAGE_OFFSET = 16;
+    private final int IMAGE_OFFSET = WIDTH / 2;
 
     private Rectangle hitbox;
 
@@ -48,11 +49,13 @@ public class Player {
     }
 
     private void loadAnimations() {
-        animations = new BufferedImage[2][2];
-        animations[0][0] = LoadSave.getSpriteAtlas(LoadSave.PLAYER_IDLE_RIGHT);
-        animations[0][1] = LoadSave.getSpriteAtlas(LoadSave.PLAYER_FALLING_RIGHT);
-        animations[1][0] = LoadSave.getSpriteAtlas(LoadSave.PLAYER_IDLE_LEFT);
-        animations[1][1] = LoadSave.getSpriteAtlas(LoadSave.PLAYER_FALLING_LEFT);
+        animations = new BufferedImage[2][3];
+        animations[0][0] = UtilityTool.scaleImage(LoadSave.getSpriteAtlas(LoadSave.PLAYER_IDLE_RIGHT), 128, 128);
+        animations[0][1] = UtilityTool.scaleImage(LoadSave.getSpriteAtlas(LoadSave.PLAYER_FALLING_RIGHT), 128, 128);
+        animations[0][2] = UtilityTool.scaleImage(LoadSave.getSpriteAtlas(LoadSave.PLAYER_JUMPING_RIGHT), 128, 128);
+        animations[1][0] = UtilityTool.scaleImage(LoadSave.getSpriteAtlas(LoadSave.PLAYER_IDLE_LEFT), 128, 128);
+        animations[1][1] = UtilityTool.scaleImage(LoadSave.getSpriteAtlas(LoadSave.PLAYER_FALLING_LEFT), 128, 128);
+        animations[1][2] = UtilityTool.scaleImage(LoadSave.getSpriteAtlas(LoadSave.PLAYER_JUMPING_LEFT), 128, 128);
     }
 
     public void update(double dt) {
@@ -95,8 +98,11 @@ public class Player {
     }
 
     private void updateState() {
-        if (isInAir((int) x, (int) y)) {
+        System.out.println(yVel);
+        if (isInAir((int) x, (int) y) && yVel > 0) {
             state = PlayerState.FALL;
+        } else if (isInAir((int) x, (int) y) && yVel <= 6) {
+            state = PlayerState.JUMP;
         } else {
             state = PlayerState.IDLE;
         }
@@ -136,7 +142,7 @@ public class Player {
     private float calculateYVel(double dt) {
         if (!isInAir((int) x, (int) y)) {
             if (gp.getKeyboardInput().getSpacePressed()) {
-                return -20;
+                return -25;
             } else {
                 return 0;
             }
